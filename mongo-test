@@ -1,0 +1,22 @@
+from pymongo import MongoClient
+
+# Replace with your MongoDB Atlas connection string
+uri = "mongodb+srv://alltimegreats123_db_user:4I8TSszeEm0cmQcO@lunch-db.1g1rjal.mongodb.net/?appName=lunch-db"
+
+# Connect to MongoDB
+client = MongoClient(uri)
+
+# Select database and collection
+db = client["5-dollar"]
+collection = db["food"]
+
+# --- WRITE (insert one document) ---
+collection.insert_one({"name": "Bingsu", "price": 6.00, "image_url": "https://zhangcatherine.com/wp-content/uploads/2023/05/DSC01116.jpg"
+})
+
+# --- READ (find one document) ---
+# found_doc = collection.find_one({"_id": insert_result.inserted_id})
+# print("Found document:", found_doc)
+
+# Close connection
+# client.close()
