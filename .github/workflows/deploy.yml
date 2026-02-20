@@ -1,0 +1,30 @@
+name: CD (Deploy)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/demoapp4800
+            git pull --rebase origin main
+
+            # stop old server
+            pkill -f "python3.12 server.py" || true
+
+            # start new server
+            nohup python3.12 server.py > log.txt 2>&1 &
