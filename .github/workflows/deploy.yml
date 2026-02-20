@@ -37,8 +37,14 @@ jobs:
             set -e
             cd ~/demoapp4800
             git pull --rebase origin main
-            pkill -f "python3.12 server.py" || true
+
+            # kill whatever is using the port
+            sudo lsof -t -i:5005 | xargs -r sudo kill || true
+            sleep 1
+            sudo lsof -t -i:5005 | xargs -r sudo kill -9 || true
+
             nohup python3.12 server.py > log.txt 2>&1 < /dev/null &
             sleep 1
-            pgrep -af "python3.12 server.py" || (echo "Server did not start" && tail -n 200 log.txt && exit 1)
-            echo "Deploy finished"
+
+            # verify port is listening
+            sudo lsof -i:5005 || (echo "Port 5005 not listening" && tail -n 200 log.txt && exit 1)
