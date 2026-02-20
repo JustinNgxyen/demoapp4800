@@ -1,18 +1,28 @@
-name: CD (Deploy)
+name: Deploy to EC2
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  ci:
-    uses: ./.github/workflows/ci.yml
-
   deploy:
-    needs: ci
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Sanity check (import)
+        run: python -c "import server; print('Import OK')"
+
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -22,9 +32,5 @@ jobs:
           script: |
             cd ~/demoapp4800
             git pull --rebase origin main
-
-            # stop old server
             pkill -f "python3.12 server.py" || true
-
-            # start new server
             nohup python3.12 server.py > log.txt 2>&1 &
