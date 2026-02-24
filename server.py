@@ -2,11 +2,15 @@ from flask import Flask, jsonify, render_template, Response
 from pymongo import MongoClient
 from bson import ObjectId
 from bson.json_util import dumps
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
 # Replace with your MongoDB Atlas connection string
-uri = "mongodb+srv://alltimegreats123_db_user:4I8TSszeEm0cmQcO@lunch-db.1g1rjal.mongodb.net/?appName=lunch-db"
+uri = os.getenv("MONGODB_URI")
 
 # Connect to MongoDB
 client = MongoClient(uri)
