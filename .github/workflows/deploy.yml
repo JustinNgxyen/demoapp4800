@@ -43,6 +43,7 @@ jobs:
             sleep 1
             sudo lsof -t -i:5005 | xargs -r sudo kill -9 || true
 
+            python3.12 -m pip install --user -r requirements.txt
             nohup python3.12 server.py > log.txt 2>&1 < /dev/null &
             sleep 1
 
