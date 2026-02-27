@@ -19,11 +19,11 @@ client = MongoClient(uri)
 db = client["premier-league"]
 collection = db["stats"]
 
-collection.insert_one({"team": "Liverpool", "name": " Hugo Ekitike", "Goals": 10, "Assists": 2, "Rating": 7.03, "img": "https://cdn-img.zerozero.pt/img/jogadores/new/00/07/820007_hugo_ekitike_20250920114821.png"})
-collection.insert_one({"team": "Liverpool", "name": "Cody Gakpo", "Goals": 5, "Assists": 3, "Rating": 7.26, "img": "https://cdn-img.zerozero.pt/img/jogadores/new/85/87/528587_cody_gakpo_20251022235835.png"})
-collection.insert_one({"team": "Liverpool", "name": "Dominik Szoboszlai", "Goals": 4, "Assists": 2, "Rating": 7.42, "img": "https://img.uefa.com/imgml/TP/players/17/2026/324x324/250104066.jpg"})
-collection.insert_one({"team": "Liverpool", "name": "Mohamed Salah", "Goals": 4, "Assists": 6, "Rating": 7.06, "img": "https://img.uefa.com/imgml/TP/players/1/2026/324x324/250052469.jpg"})
-collection.insert_one({"team": "Liverpool", "name": "Ryan Gravenberch", "Goals": 4, "Assists": 2, "Rating": 7.45, "img": "https://cdn-img.zerozero.pt/img/jogadores/new/66/31/596631_ryan_gravenberch_20251102003135.png"})
+# collection.insert_one({"team": "Liverpool", "name": " Hugo Ekitike", "Goals": 10, "Assists": 2, "Rating": 7.03, "img": "https://cdn-img.zerozero.pt/img/jogadores/new/00/07/820007_hugo_ekitike_20250920114821.png"})
+# collection.insert_one({"team": "Liverpool", "name": "Cody Gakpo", "Goals": 5, "Assists": 3, "Rating": 7.26, "img": "https://cdn-img.zerozero.pt/img/jogadores/new/85/87/528587_cody_gakpo_20251022235835.png"})
+# collection.insert_one({"team": "Liverpool", "name": "Dominik Szoboszlai", "Goals": 4, "Assists": 2, "Rating": 7.42, "img": "https://img.uefa.com/imgml/TP/players/17/2026/324x324/250104066.jpg"})
+# collection.insert_one({"team": "Liverpool", "name": "Mohamed Salah", "Goals": 4, "Assists": 6, "Rating": 7.06, "img": "https://img.uefa.com/imgml/TP/players/1/2026/324x324/250052469.jpg"})
+# collection.insert_one({"team": "Liverpool", "name": "Ryan Gravenberch", "Goals": 4, "Assists": 2, "Rating": 7.45, "img": "https://cdn-img.zerozero.pt/img/jogadores/new/66/31/596631_ryan_gravenberch_20251102003135.png"})
 
 @app.route("/")
 def start_index():
