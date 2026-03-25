@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LanguageToolBox — Submit Resource</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">  <img src="/static/logo.png" class="site-logo">
+      <div>LanguageToolBox</div></a>
+      <div class="nav-search">
+        <span class="muted">🔎</span>
+        <input placeholder="Search resources…" />
+    </div>
+      <div class="nav-links">
+        <a class="nav-pill" href="/dashboard">Dashboard</a>
+        <a class="nav-pill" href="/resources">Browse</a>
+        <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+        <a class="nav-pill" href="/favorites">Favorites</a>
+        <a class="nav-pill" href="/login">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="spread">
+      <div>
+        <h2>Submit a resource</h2>
+        <p class="muted">Add a textbook, app, website, video, or podcast to the library.</p>
+      </div>
+      <a class="btn ghost" href="/resources">Back to browse</a>
+    </div>
+
+    <div style="height:12px;"></div>
+
+    <div class="card" style="max-width: 780px;">
+      <form class="form" action="#" method="post">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-row">
+            <div class="label">Title</div>
+            <input class="input" placeholder="Example: SpanishDict">
+          </div>
+          <div class="form-row">
+            <div class="label">Resource link</div>
+            <input class="input" placeholder="https://...">
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap:12px;">
+          <div class="form-row">
+            <div class="label">Type</div>
+            <select class="select">
+              <option>Textbook</option>
+              <option>App</option>
+              <option>Website</option>
+              <option>Video</option>
+              <option>Podcast</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="label">Level</div>
+            <select class="select">
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="label">Price</div>
+            <select class="select">
+              <option>Free</option>
+              <option>Paid</option>
+              <option>Freemium</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="label">Skill focus tags</div>
+          <div class="row">
+            <label class="check"><input type="checkbox"> Grammar</label>
+            <label class="check"><input type="checkbox"> Vocabulary</label>
+            <label class="check"><input type="checkbox"> Speaking</label>
+            <label class="check"><input type="checkbox"> Writing</label>
+            <label class="check"><input type="checkbox"> Listening</label>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-row">
+            <div class="label">Rating (optional)</div>
+            <select class="select">
+              <option>—</option>
+              <option>5.0</option><option>4.8</option><option>4.6</option><option>4.4</option><option>4.2</option><option>4.0</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="label">Review count (optional)</div>
+            <input class="input" placeholder="Example: 120000">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="label">Description</div>
+          <textarea class="textarea" rows="5" placeholder="Who is it best for? What does it focus on?"></textarea>
+        </div>
+
+        <button class="btn primary" type="submit">Submit resource</button>
+        <div class="small-note">Later: save this form to MongoDB.</div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

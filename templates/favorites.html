@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LanguageToolBox — Favorites</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <img src="/static/logo.png" class="site-logo">
+        <div>LanguageToolBox</div>
+      </a>
+      <form class="nav-search" method="get" action="/resources">
+        <span class="muted">🔎</span>
+        <input name="q" placeholder="Search resources…" />
+      </form>
+      <div class="nav-links">
+        <a class="nav-pill" href="/dashboard">Dashboard</a>
+        <a class="nav-pill" href="/resources">Browse</a>
+        <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+        <a class="nav-pill" href="/favorites">Favorites</a>
+        {% if session.get('user_name') %}
+          <span class="nav-pill">👋 {{ session['user_name'] }}</span>
+          <a class="nav-pill" href="/logout">Log out</a>
+        {% else %}
+          <a class="nav-pill" href="/login">Log in</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="spread">
+      <div>
+        <h2>❤️ Your Favorites</h2>
+        <p class="muted">Resources you've saved for later.</p>
+      </div>
+      <a class="btn ghost" href="/resources">Browse more</a>
+    </div>
+
+    <div style="height:16px;"></div>
+
+    {% if resources %}
+    <div class="grid resource-grid">
+      {% for r in resources %}
+      <div class="card resource-card">
+        <div class="resource-head">
+          <div>
+            <div class="resource-title">{{ r.title }}</div>
+            <div class="meta">
+              {{ r.type }} · {{ r.target_language }} · ⭐ {{ r.rating }} · {{ r.price }}
+            </div>
+          </div>
+          {# Remove from favorites button #}
+          <form method="post" action="/favorites/remove/{{ r._id }}">
+            <button type="submit" class="heart-btn active" title="Remove from favorites">♥</button>
+          </form>
+        </div>
+        <div class="tagrow">
+          {% for t in r.tags %}
+            <span class="tag
+              {% if t == 'Grammar' %}orange
+              {% elif t == 'Vocabulary' %}green
+              {% elif t == 'Speaking' %}purple
+              {% elif t == 'Writing' %}blue
+              {% elif t == 'Listening' %}red
+              {% else %}gray{% endif %}
+            ">{{ t }}</span>
+          {% endfor %}
+        </div>
+        <a class="btn secondary" href="/resources/{{ r._id }}">View details</a>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="card" style="text-align:center; padding:60px 24px; background: linear-gradient(135deg, rgba(46,212,122,.15), rgba(59,130,246,.12));">
+      <div style="font-size:48px;">🔖</div>
+      <h3 style="margin-top:12px;">No favorites yet</h3>
+      <p class="muted">Hit the ♥ on any resource to save it here.</p>
+      <a class="btn primary" href="/resources" style="display:inline-flex; margin-top:8px;">Browse resources</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <style>
+    .heart-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #ccc;
+      line-height: 1;
+      padding: 4px;
+      transition: color .15s ease, transform .08s ease;
+    }
+    .heart-btn:hover  { color: #e05; transform: scale(1.15); }
+    .heart-btn.active { color: #e05; }
+  </style>
+
+</body>
+</html>

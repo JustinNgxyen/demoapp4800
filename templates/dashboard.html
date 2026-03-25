@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LanguageToolBox — Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">  <img src="/static/logo.png" class="site-logo">
+      <div>LanguageToolBox</div></a>
+
+      <div class="nav-search">
+        <span class="muted">🔎</span>
+        <input placeholder="Search resources…" />
+    </div>
+      <div class="nav-links">
+        <a class="nav-pill" href="/dashboard">Dashboard</a>
+        <a class="nav-pill" href="/resources">Browse</a>
+        <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+        <a class="nav-pill" href="/favorites">Favorites</a>
+        <a class="nav-pill" href="/login">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+
+    <div class="spread">
+      <div>
+        <h2>Your dashboard</h2>
+      </div>
+      <div class="row">
+        <a class="btn secondary" href="/onboarding">Edit preferences</a>
+        <a class="btn ghost" href="/submit">+ Submit a resource</a>
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+
+    <div class="grid" style="grid-template-columns: 1.2fr .8fr; gap:16px;">
+      <div class="card dashboard-highlight">
+        <div class="spread">
+          <div>
+            <div class="badge"><span class="dot" style="background:var(--purple)"></span> Starter Pack Bundle</div>
+            <h2 style="margin-top:10px;">Recommended starter bundle</h2>
+            <p class="muted">A curated set of resources to help you get started (no lessons inside the site).</p>
+          </div>
+          <a class="btn primary" href="/starter-packs">View bundle</a>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="kpi">
+          <div class="box"><span class="dot" style="background:var(--green)"></span> 10 resources</div>
+          <div class="box"><span class="dot" style="background:var(--blue)"></span> 4 categories</div>
+          <div class="box"><span class="dot" style="background:var(--orange)"></span> Beginner-friendly</div>
+        </div>
+
+        <div style="height:10px;"></div>
+        <div class="tagrow">
+          <span class="tag purple">Starter Pack</span>
+          <span class="tag blue">Most reviewed</span>
+          <span class="tag green">Speaking</span>
+          <span class="tag orange">Vocab</span>
+        </div>
+      </div>
+
+      <div class="dashboard-highlight2">
+        <h3>Quick actions</h3>
+        <div class="hr"></div>
+        <a class="btn secondary" href="/resources">Browse resources</a>
+        <div style="height:10px;"></div>
+        <a class="btn secondary" href="/favorites">Open favorites</a>
+        <div class="hr"></div>
+        <p class="muted"><b>Tip:</b> Favorite items as you browse so your list becomes your personal toolbox.</p>
+      </div>
+    </div>
+
+    <div style="height:16px;"></div>
+
+    <div class="spread">
+      <h2>Top picks for you</h2>
+      <a class="muted" href="/resources"><b>See all</b></a>
+    </div>
+
+    <div style="height:10px;"></div>
+
+    <div class="grid resource-grid">
+      <div class="card resource-card">
+        <div class="resource-head">
+          <div class="row">
+            <div class="icon-bubble green">📱</div>
+            <div>
+              <div class="resource-title">Duolingo (resource link)</div>
+              <div class="meta">App · ⭐ 4.6 · Free · 2.1M reviews</div>
+            </div>
+          </div>
+          <a class="btn ghost small" href="/favorites">♡</a>
+        </div>
+        <div class="tagrow">
+          <span class="tag green">Vocabulary</span>
+          <span class="tag red">Listening</span>
+          <span class="tag orange">Beginner</span>
+        </div>
+        <a class="btn secondary" href="/resources/1">View details</a>
+      </div>
+
+      <div class="card resource-card">
+        <div class="resource-head">
+          <div class="row">
+            <div class="icon-bubble orange">🌐</div>
+            <div>
+              <div class="resource-title">SpanishDict</div>
+              <div class="meta">Website · ⭐ 4.5 · Free · 120K reviews</div>
+            </div>
+          </div>
+          <a class="btn ghost small" href="/favorites">♡</a>
+        </div>
+        <div class="tagrow">
+          <span class="tag orange">Grammar</span>
+          <span class="tag green">Vocabulary</span>
+          <span class="tag blue">Writing</span>
+        </div>
+        <a class="btn secondary" href="/resources/2">View details</a>
+      </div>
+
+      <div class="card resource-card">
+        <div class="resource-head">
+          <div class="row">
+            <div class="icon-bubble blue">🎥</div>
+            <div>
+              <div class="resource-title">Easy Spanish (YouTube)</div>
+              <div class="meta">Video · ⭐ 4.8 · Free · 85K reviews</div>
+            </div>
+          </div>
+          <a class="btn ghost small" href="/favorites">♡</a>
+        </div>
+        <div class="tagrow">
+          <span class="tag purple">Speaking</span>
+          <span class="tag red">Listening</span>
+          <span class="tag orange">Beginner</span>
+        </div>
+        <a class="btn secondary" href="/resources/3">View details</a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

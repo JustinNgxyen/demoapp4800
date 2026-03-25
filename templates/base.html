@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title if title else "LanguageToolBox" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <img src="/static/logo.png" class="site-logo">
+        <div>LanguageToolBox</div>
+      </a>
+
+      <div class="nav-search">
+        <span class="muted">🔎</span>
+        <input placeholder="Search resources…" />
+    </div>
+
+      <div class="nav-links">
+        <a class="nav-pill" href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a class="nav-pill" href="{{ url_for('resources') }}">Browse</a>
+        <a class="nav-pill" href="{{ url_for('starter_pack') }}">Starter Pack</a>
+        <a class="nav-pill" href="{{ url_for('favorites') }}">Favorites</a>
+        <a class="nav-pill" href="{{ url_for('login') }}">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LanguageToolBox — Starter Packs</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">  <img src="/static/logo.png" class="site-logo">
+    <div>LanguageToolBox</div></a>
+    <div class="nav-search">
+      <span class="muted">🔎</span>
+      <input placeholder="Search resources…">
+    </div>
+    <div class="nav-links">
+      <a class="nav-pill" href="/dashboard">Dashboard</a>
+      <a class="nav-pill" href="/resources">Browse</a>
+      <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+      <a class="nav-pill" href="/favorites">Favorites</a>
+      <a class="nav-pill" href="/login">Log in</a>
+    </div>
+  </div>
+</div>
+
+<div class="container page">
+
+  <h2>Starter Packs</h2>
+  <p class="muted">
+    Curated bundles of top-rated beginner-friendly resources by language.
+  </p>
+
+  <div style="height:18px;"></div>
+
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:18px;">
+
+    <!-- Spanish -->
+    <a href="/starter-pack/spanish" class="card" style="text-decoration:none;">
+      <div class="spread">
+        <h3>🇪🇸 Spanish Starter Pack</h3>
+        <span class="badge">
+          <span class="dot" style="background:var(--green)"></span>
+          Beginner Friendly
+        </span>
+      </div>
+      <div class="hr"></div>
+      <p class="muted">
+        10 curated resources including apps, textbooks, websites, and videos.
+      </p>
+      <div class="tagrow">
+        <span class="tag green">Vocabulary</span>
+        <span class="tag purple">Speaking</span>
+        <span class="tag orange">Grammar</span>
+      </div>
+    </a>
+
+    <!-- Japanese -->
+    <a href="/starter-pack/japanese" class="card" style="text-decoration:none;">
+      <div class="spread">
+        <h3>🇯🇵 Japanese Starter Pack</h3>
+        <span class="badge">
+          <span class="dot" style="background:var(--purple)"></span>
+          Structured Start
+        </span>
+      </div>
+      <div class="hr"></div>
+      <p class="muted">
+        Recommended beginner apps, kana guides, grammar references, and YouTube channels.
+      </p>
+      <div class="tagrow">
+        <span class="tag red">Listening</span>
+        <span class="tag orange">Grammar</span>
+        <span class="tag green">Vocabulary</span>
+      </div>
+    </a>
+
+    <!-- French -->
+    <a href="/starter-pack/french" class="card" style="text-decoration:none;">
+      <div class="spread">
+        <h3>🇫🇷 French Starter Pack</h3>
+        <span class="badge">
+          <span class="dot" style="background:var(--blue)"></span>
+          Most Reviewed
+        </span>
+      </div>
+      <div class="hr"></div>
+      <p class="muted">
+        Highly rated beginner resources across textbooks, apps, and podcasts.
+      </p>
+      <div class="tagrow">
+        <span class="tag purple">Speaking</span>
+        <span class="tag red">Listening</span>
+        <span class="tag green">Vocabulary</span>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+</body>
+</html>

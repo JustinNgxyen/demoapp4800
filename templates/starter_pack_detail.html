@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LanguageToolBox — Starter Pack</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">  <img src="/static/logo.png" class="site-logo">
+    <div>LanguageToolBox</div></a>
+    <div class="nav-search">
+      <span class="muted">🔎</span>
+      <input placeholder="Search resources…">
+    </div>
+    <div class="nav-links">
+      <a class="nav-pill" href="/dashboard">Dashboard</a>
+      <a class="nav-pill" href="/resources">Browse</a>
+      <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+      <a class="nav-pill" href="/favorites">Favorites</a>
+      <a class="nav-pill" href="/login">Log in</a>
+    </div>
+  </div>
+</div>
+
+<div class="container page">
+
+  <h2>
+    {{ language.capitalize() }} Starter Pack
+  </h2>
+
+  <p class="muted">
+    A curated beginner bundle for learning {{ language.capitalize() }}.
+  </p>
+
+  <div style="height:18px;"></div>
+
+  <div class="card">
+    <div class="badge">
+      <span class="dot" style="background:var(--green)"></span>
+      10 Recommended Resources
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="grid resource-grid">
+
+      {% for t, items in picks.items() %}
+      <h3>{{ t }}</h3>
+      <div class="grid resource-grid">
+        {% for r in items %}
+          <div class="card resource-card">
+            <div class="resource-title">{{ r.title }}</div>
+            <div class="meta">⭐ {{ r.rating }} · {{ r.price }} · {{ r.level }}</div>
+            <a class="btn secondary" href="/resources/{{ r._id }}">View details</a>
+          </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

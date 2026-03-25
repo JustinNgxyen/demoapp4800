@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LanguageToolBox — {{ resource.title }}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    .heart-btn {
+      background: none; border: none; font-size: 20px; cursor: pointer;
+      color: #ccc; line-height: 1; padding: 4px; text-decoration: none;
+      transition: color .15s ease, transform .08s ease;
+    }
+    .heart-btn:hover  { color: #e05; transform: scale(1.15); }
+    .heart-btn.active { color: #e05; }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <img src="/static/logo.png" class="site-logo">
+        <div>LanguageToolBox</div>
+      </a>
+      <form class="nav-search" method="get" action="/resources">
+        <span class="muted">🔎</span>
+        <input name="q" placeholder="Search resources…" />
+      </form>
+      <div class="nav-links">
+        <a class="nav-pill" href="/dashboard">Dashboard</a>
+        <a class="nav-pill" href="/resources">Browse</a>
+        <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+        <a class="nav-pill" href="/favorites">Favorites</a>
+        {% if session.get('user_name') %}
+          <span class="nav-pill">👋 {{ session['user_name'] }}</span>
+          <a class="nav-pill" href="/logout">Log out</a>
+        {% else %}
+          <a class="nav-pill" href="/login">Log in</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+
+    <div class="muted" style="margin-bottom:10px;">
+      <a class="muted" href="/resources"><b>Browse</b></a> → <b>{{ resource.title }}</b>
+    </div>
+
+    <div class="detail-grid">
+      <!-- Main detail -->
+      <div class="card">
+        <div class="spread">
+          <div>
+            <h2 style="margin-bottom:6px;">{{ resource.title }}</h2>
+            <div class="meta">
+              Type: {{ resource.type }} · ⭐ {{ resource.rating }} · {{ resource.price }}
+              {% if resource.level %} · Best for: {{ resource.level }}{% endif %}
+              {% if resource.review_count %} · {{ resource.review_count }} reviews{% endif %}
+            </div>
+          </div>
+          {% if session.get('user_id') %}
+            {% if is_favorited %}
+              <form method="post" action="/favorites/remove/{{ resource._id }}">
+                <button type="submit" class="heart-btn active" title="Remove from favorites">♥ Saved</button>
+              </form>
+            {% else %}
+              <form method="post" action="/favorites/add/{{ resource._id }}">
+                <button type="submit" class="heart-btn" title="Save to favorites">♡ Save</button>
+              </form>
+            {% endif %}
+          {% else %}
+            <a href="/login" class="btn ghost">♡ Save</a>
+          {% endif %}
+        </div>
+
+        <div class="hr"></div>
+
+        {% if resource.description %}
+        <h3>Summary</h3>
+        <p class="muted">{{ resource.description }}</p>
+        {% endif %}
+
+        <h3>Skill focus tags</h3>
+        <div class="tagrow">
+          {% for t in resource.tags %}
+            <span class="tag
+              {% if t == 'Grammar' %}orange
+              {% elif t == 'Vocabulary' %}green
+              {% elif t == 'Speaking' %}purple
+              {% elif t == 'Writing' %}blue
+              {% elif t == 'Listening' %}red
+              {% else %}gray{% endif %}
+            ">{{ t }}</span>
+          {% endfor %}
+        </div>
+
+        {% if resource.target_language %}
+        <div class="hr"></div>
+        <div class="meta">Language: <b>{{ resource.target_language }}</b></div>
+        {% endif %}
+      </div>
+
+      <!-- Actions -->
+      <div class="card">
+        <h3>Quick actions</h3>
+        <div class="form">
+          {% if resource.url %}
+            <a class="btn primary" href="{{ resource.url }}" target="_blank" rel="noopener">Open resource ↗</a>
+          {% else %}
+            <button class="btn primary" type="button" disabled>No link available</button>
+          {% endif %}
+
+          {% if session.get('user_id') %}
+            {% if is_favorited %}
+              <form method="post" action="/favorites/remove/{{ resource._id }}">
+                <button type="submit" class="btn secondary" style="width:100%;">♥ Remove from favorites</button>
+              </form>
+            {% else %}
+              <form method="post" action="/favorites/add/{{ resource._id }}">
+                <button type="submit" class="btn secondary" style="width:100%;">♡ Add to favorites</button>
+              </form>
+            {% endif %}
+          {% else %}
+            <a class="btn ghost" href="/login">Log in to save</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

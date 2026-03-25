@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LanguageToolBox — Sign Up</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">  <img src="/static/logo.png" class="site-logo">
+      <div>LanguageToolBox</div></a>
+      <div class="nav-search">
+        <span class="muted">🔎</span>
+        <input placeholder="Search resources…" />
+    </div>
+      <div class="nav-links">
+        <a class="nav-pill" href="/dashboard">Dashboard</a>
+        <a class="nav-pill" href="/resources">Browse</a>
+        <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+        <a class="nav-pill" href="/favorites">Favorites</a>
+        <a class="nav-pill" href="/login">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="auth-wrap">
+      <div class="auth-top">
+        <h2>Create an account</h2>
+        <p class="muted">Then set your language + focus tags.</p>
+      </div>
+
+      <div class="card">
+        <form class="form" action="#" method="post">
+          <div class="form-row">
+            <div class="label">Name</div>
+            <input class="input" placeholder="Justin">
+          </div>
+
+          <div class="form-row">
+            <div class="label">Email</div>
+            <input class="input" type="email" placeholder="you@example.com">
+          </div>
+
+          <div class="form-row">
+            <div class="label">Password</div>
+            <input class="input" type="password" placeholder="••••••••">
+          </div>
+
+          <a class="btn primary" href="/onboarding">Create account</a>
+
+          <div class="row" style="justify-content:center;">
+            <a class="muted" href="/login"><b>Already have an account?</b></a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LanguageToolBox — Browse</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    .tag-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .12s ease, filter .12s ease;
+      background: #fff;
+    }
+    .tag-btn:active { transform: translateY(1px); }
+    .tag-btn.orange { background: #F4D8B2; }
+    .tag-btn.green  { background: #83D475; }
+    .tag-btn.purple { background: #E5CFFB; }
+    .tag-btn.blue   { background: #6DD5FA; }
+    .tag-btn.red    { background: #E7B6BD; }
+    .tag-btn.active.orange { border-color: #C97A00; box-shadow: 0 0 0 3px rgba(245,158,11,.25); }
+    .tag-btn.active.green  { border-color: #1E8A12; box-shadow: 0 0 0 3px rgba(46,212,122,.25); }
+    .tag-btn.active.purple { border-color: #6D28D9; box-shadow: 0 0 0 3px rgba(139,92,246,.25); }
+    .tag-btn.active.blue   { border-color: #0369A1; box-shadow: 0 0 0 3px rgba(59,130,246,.25); }
+    .tag-btn.active.red    { border-color: #9B1C2E; box-shadow: 0 0 0 3px rgba(220,50,80,.25); }
+    .tag-hidden { display: none; }
+    .active-filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+    .active-filter-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      background: #fff; border: 1px solid var(--border);
+      font-size: 12px; font-weight: 800;
+    }
+    .active-filter-chip a { color: var(--muted); font-weight: 900; font-size: 14px; line-height: 1; text-decoration: none; }
+    .active-filter-chip a:hover { color: #c00; }
+    .result-count { font-size: 13px; color: var(--muted); font-weight: 800; margin-top: 4px; }
+    .heart-btn {
+      background: none; border: none; font-size: 20px; cursor: pointer;
+      color: #ccc; line-height: 1; padding: 4px; text-decoration: none;
+      transition: color .15s ease, transform .08s ease;
+    }
+    .heart-btn:hover  { color: #e05; transform: scale(1.15); }
+    .heart-btn.active { color: #e05; }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <img src="/static/logo.png" class="site-logo">
+        <div>LanguageToolBox</div>
+      </a>
+      <form class="nav-search" method="get" action="/resources">
+        <span class="muted">🔎</span>
+        <input name="q" placeholder="Search resources…" value="{{ request.args.get('q', '') }}" />
+      </form>
+      <div class="nav-links">
+        <a class="nav-pill" href="/dashboard">Dashboard</a>
+        <a class="nav-pill" href="/resources">Browse</a>
+        <a class="nav-pill" href="/starter-packs">Starter Packs</a>
+        <a class="nav-pill" href="/favorites">Favorites</a>
+        {% if session.get('user_name') %}
+          <span class="nav-pill">👋 {{ session['user_name'] }}</span>
+          <a class="nav-pill" href="/logout">Log out</a>
+        {% else %}
+          <a class="nav-pill" href="/login">Log in</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="spread">
+      <div>
+        <h2>Browse resources</h2>
+        <p class="muted">Sort by rating/reviews and filter by skill focus, level, price, and type.</p>
+      </div>
+      <div class="row">
+        <select class="select" style="width:240px;" id="sort-select">
+          <option value="top_rated"     {% if request.args.get('sort','top_rated') == 'top_rated' %}selected{% endif %}>Sort: Top rated</option>
+          <option value="most_reviewed" {% if request.args.get('sort') == 'most_reviewed' %}selected{% endif %}>Sort: Most reviewed</option>
+          <option value="newest"        {% if request.args.get('sort') == 'newest' %}selected{% endif %}>Sort: Newest</option>
+        </select>
+        <a class="btn ghost" href="/submit">+ Submit resource</a>
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+
+    <form method="get" action="/resources" id="filter-form">
+      <input type="hidden" name="sort" id="sort-hidden" value="{{ request.args.get('sort', 'top_rated') }}">
+
+      <div class="two-col">
+        <!-- Filters -->
+        <div class="filter-side">
+          <h3>Filters</h3>
+          <div class="hr"></div>
+          <div class="filter-group">
+
+            <div>
+              <div class="label">Language</div>
+              {% for lang in ['Spanish','French','Japanese','Korean','German','Italian'] %}
+              <label class="check">
+                <input type="checkbox" name="target_language" value="{{ lang }}"
+                  {% if lang in request.args.getlist('target_language') %}checked{% endif %}>
+                {{ lang }}
+              </label>
+              {% endfor %}
+            </div>
+
+            <div>
+              <div class="label">Type</div>
+              {% for t in ['Textbook','App','Website','Video','Podcast'] %}
+              <label class="check">
+                <input type="checkbox" name="type" value="{{ t }}"
+                  {% if t in request.args.getlist('type') %}checked{% endif %}>
+                {{ t }}
+              </label>
+              {% endfor %}
+            </div>
+
+            <div class="hr"></div>
+
+            <div>
+              <div class="label">Price</div>
+              {% for p in ['Free','Paid'] %}
+              <label class="check">
+                <input type="checkbox" name="price" value="{{ p }}"
+                  {% if p in request.args.getlist('price') %}checked{% endif %}>
+                {{ p }}
+              </label>
+              {% endfor %}
+            </div>
+
+            <div class="hr"></div>
+
+            <div>
+              <div class="label">Level</div>
+              {% for lvl in ['Beginner','Intermediate','Advanced'] %}
+              <label class="check">
+                <input type="checkbox" name="level" value="{{ lvl }}"
+                  {% if lvl in request.args.getlist('level') %}checked{% endif %}>
+                {{ lvl }}
+              </label>
+              {% endfor %}
+            </div>
+
+            <div class="hr"></div>
+
+            <div>
+              <div class="label">Skill focus</div>
+              <div class="tagrow" style="gap:8px; flex-wrap:wrap;">
+                {% set tag_colors = {'Grammar':'orange','Vocabulary':'green','Speaking':'purple','Writing':'blue','Listening':'red'} %}
+                {% for tag, color in tag_colors.items() %}
+                  {% set is_active = tag in request.args.getlist('tag') %}
+                  <input class="tag-hidden" type="checkbox" name="tag" value="{{ tag }}"
+                         id="tag-{{ tag }}" {% if is_active %}checked{% endif %}>
+                  <button type="button"
+                          class="tag-btn {{ color }} {% if is_active %}active{% endif %}"
+                          data-target="tag-{{ tag }}">
+                    {{ tag }}
+                  </button>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div>
+              <div class="label">Rating</div>
+              {% for r in [('4.5','4.5+ stars'),('4.0','4.0+ stars'),('3.5','3.5+ stars')] %}
+              <label class="check">
+                <input type="checkbox" name="min_rating" value="{{ r[0] }}"
+                  {% if r[0] in request.args.getlist('min_rating') %}checked{% endif %}>
+                {{ r[1] }}
+              </label>
+              {% endfor %}
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <button class="btn primary" type="submit">Apply</button>
+              <a class="btn ghost" href="/resources">Reset</a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="grid">
+          <div class="filter-side-search" style="padding:14px;">
+            <div class="row" style="width:100%;">
+              <input class="input" name="q" placeholder="Search: 'spanish grammar textbook'…"
+                     value="{{ request.args.get('q','') }}">
+              <button class="btn secondary" type="submit">Search</button>
+            </div>
+
+            {% set active = [] %}
+            {% for lang in request.args.getlist('target_language') %}{% set _ = active.append(('target_language', lang)) %}{% endfor %}
+            {% for t in request.args.getlist('type') %}{% set _ = active.append(('type', t)) %}{% endfor %}
+            {% for p in request.args.getlist('price') %}{% set _ = active.append(('price', p)) %}{% endfor %}
+            {% for l in request.args.getlist('level') %}{% set _ = active.append(('level', l)) %}{% endfor %}
+            {% for t in request.args.getlist('tag') %}{% set _ = active.append(('tag', t)) %}{% endfor %}
+            {% for r in request.args.getlist('min_rating') %}{% set _ = active.append(('min_rating', r ~ '+★')) %}{% endfor %}
+            {% if request.args.get('q') %}{% set _ = active.append(('q', '"' ~ request.args.get('q') ~ '"')) %}{% endif %}
+
+            {% if active %}
+            <div class="active-filters">
+              <span style="font-size:12px; font-weight:900; color:var(--muted);">Active:</span>
+              {% for key, val in active %}
+                <span class="active-filter-chip">
+                  {{ val }}
+                  <a href="{{ request.path }}?{{ request.query_string.decode() | replace(key ~ '=' ~ val | urlencode, '') | replace('&&','&') | trim('&') }}"
+                     title="Remove">✕</a>
+                </span>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="result-count">{{ resources | length }} result{{ 's' if resources | length != 1 else '' }}</div>
+          </div>
+
+          <div class="grid resource-grid">
+            {% for r in resources %}
+            <div class="card resource-card">
+              <div class="resource-head">
+                <div>
+                  <div class="resource-title">{{ r.title }}</div>
+                  <div class="meta">
+                    {{ r.type }} · {{ r.target_language }} · ⭐ {{ r.rating }} · {{ r.price }}
+                  </div>
+                </div>
+                {% if session.get('user_id') %}
+                  {% if str(r._id) in favorited_ids %}
+                    <form method="post" action="/favorites/remove/{{ r._id }}">
+                      <button type="submit" class="heart-btn active" title="Remove from favorites">♥</button>
+                    </form>
+                  {% else %}
+                    <form method="post" action="/favorites/add/{{ r._id }}">
+                      <button type="submit" class="heart-btn" title="Add to favorites">♡</button>
+                    </form>
+                  {% endif %}
+                {% else %}
+                  <a href="/login" class="heart-btn" title="Log in to save">♡</a>
+                {% endif %}
+              </div>
+              <div class="tagrow">
+                {% for t in r.tags %}
+                  <span class="tag
+                    {% if t == 'Grammar' %}orange
+                    {% elif t == 'Vocabulary' %}green
+                    {% elif t == 'Speaking' %}purple
+                    {% elif t == 'Writing' %}blue
+                    {% elif t == 'Listening' %}red
+                    {% else %}gray{% endif %}
+                  ">{{ t }}</span>
+                {% endfor %}
+              </div>
+              <a class="btn secondary" href="/resources/{{ r._id }}">View details</a>
+            </div>
+            {% endfor %}
+
+            {% if not resources %}
+            <div style="grid-column:1/-1; text-align:center; padding:48px 0; color:var(--muted);">
+              <div style="font-size:32px;">🔍</div>
+              <p style="margin-top:10px; font-weight:800;">No resources match your filters.</p>
+              <a class="btn ghost" href="/resources" style="display:inline-flex; margin-top:10px;">Clear all filters</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.querySelectorAll('.tag-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const checkbox = document.getElementById(btn.dataset.target);
+        checkbox.checked = !checkbox.checked;
+        btn.classList.toggle('active', checkbox.checked);
+      });
+    });
+    document.getElementById('sort-select').addEventListener('change', function() {
+      document.getElementById('sort-hidden').value = this.value;
+      document.getElementById('filter-form').submit();
+    });
+  </script>
+</body>
+</html>
