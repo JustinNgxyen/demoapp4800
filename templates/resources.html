@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GNHN86FZQP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GNHN86FZQP');
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LanguageToolBox — Browse</title>
@@ -57,7 +66,7 @@
       </a>
       <form class="nav-search" method="get" action="/resources">
         <span class="muted">🔎</span>
-        <input name="q" placeholder="Search resources…" value="{{ request.args.get('q', '') }}" />
+        <input name="q" placeholder="Search..." value="{{ request.args.get('q', '') }}" />
       </form>
       <div class="nav-links">
         <a class="nav-pill" href="/dashboard">Dashboard</a>
@@ -65,7 +74,7 @@
         <a class="nav-pill" href="/starter-packs">Starter Packs</a>
         <a class="nav-pill" href="/favorites">Favorites</a>
         {% if session.get('user_name') %}
-          <span class="nav-pill">👋 {{ session['user_name'] }}</span>
+          <span class="nav-pill" style="white-space:nowrap;">👋 {{ session['user_name'] }}</span>
           <a class="nav-pill" href="/logout">Log out</a>
         {% else %}
           <a class="nav-pill" href="/login">Log in</a>
@@ -208,7 +217,7 @@
             {% for l in request.args.getlist('level') %}{% set _ = active.append(('level', l)) %}{% endfor %}
             {% for t in request.args.getlist('tag') %}{% set _ = active.append(('tag', t)) %}{% endfor %}
             {% for r in request.args.getlist('min_rating') %}{% set _ = active.append(('min_rating', r ~ '+★')) %}{% endfor %}
-            {% if request.args.get('q') %}{% set _ = active.append(('q', '"' ~ request.args.get('q') ~ '"')) %}{% endif %}
+            {% if request.args.get('q') %}{% set _ = active.append(('q', request.args.get('q'))) %}{% endif %}
 
             {% if active %}
             <div class="active-filters">
@@ -237,7 +246,7 @@
                   </div>
                 </div>
                 {% if session.get('user_id') %}
-                  {% if str(r._id) in favorited_ids %}
+                  {% if r._id|string in favorited_ids %}
                     <form method="post" action="/favorites/remove/{{ r._id }}">
                       <button type="submit" class="heart-btn active" title="Remove from favorites">♥</button>
                     </form>

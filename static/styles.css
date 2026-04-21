@@ -106,23 +106,26 @@ p{ margin:0 0 12px; line-height:1.5; }
   display:flex; align-items:center; gap:14px; justify-content:space-between;
 }
 .brand{
-  display:flex; align-items:center; gap:10px; font-weight:900;
+  display:flex; align-items:center; gap:10px; font-weight:900; white-space: nowrap;
 }
 .site-logo {
-  height: 85px;
+  height: 70px;
   width: auto;
 }
-.nav-links{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.nav-links{ display:flex; gap:10px; align-items:center; flex-wrap: nowrap; }
+
 .nav-pill{
   padding:10px 12px;
   border-radius:999px;
   border:1px solid var(--border);
   background:#fff;
   font-weight:800;
+  white-space: nowrap;
 }
 .nav-pill:hover{ filter:brightness(.98); }
 .nav-search{
-  min-width:240px;
+  min-width:100px;
+  max-width: 140px;
   display:flex; align-items:center; gap:8px;
   background:#fff;
   border:1px solid var(--border);

@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GNHN86FZQP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GNHN86FZQP');
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LanguageToolBox — Sign Up</title>
@@ -14,14 +23,19 @@
       <div>LanguageToolBox</div></a>
       <div class="nav-search">
         <span class="muted">🔎</span>
-        <input placeholder="Search resources…" />
+        <input placeholder="Search..." />
     </div>
       <div class="nav-links">
         <a class="nav-pill" href="/dashboard">Dashboard</a>
         <a class="nav-pill" href="/resources">Browse</a>
         <a class="nav-pill" href="/starter-packs">Starter Packs</a>
         <a class="nav-pill" href="/favorites">Favorites</a>
-        <a class="nav-pill" href="/login">Log in</a>
+        {% if session.get('user_name') %}
+          <span class="nav-pill" style="white-space:nowrap;">👋 {{ session['user_name'] }}</span>
+          <a class="nav-pill" href="/logout">Log out</a>
+        {% else %}
+          <a class="nav-pill" href="/login">Log in</a>
+        {% endif %}
       </div>
     </div>
   </div>

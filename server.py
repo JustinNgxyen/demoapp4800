@@ -145,7 +145,10 @@ def browse_resources():
 
     search_text = request.args.get("q", "").strip()
     if search_text:
-        q["$text"] = {"$search": search_text}
+        q["$or"] = [
+            {"title":       {"$regex": search_text, "$options": "i"}},
+            {"description": {"$regex": search_text, "$options": "i"}},
+        ]
 
     sort = request.args.get("sort", "top_rated")
     sort_spec = [("rating", -1)]
@@ -231,9 +234,35 @@ def remove_favorite(rid):
 
 # ─── Submit ───────────────────────────────────────────────────────────────────
 
-@app.route("/submit")
+@app.route("/submit", methods=["GET", "POST"])
 def submit():
-    return render_template("submit.html")
+    if request.method == "GET":
+        return render_template("submit.html")
+
+    data = request.get_json()
+
+    required = ["title", "link", "type", "level", "price", "description"]
+    for field in required:
+        if not data.get(field):
+            return jsonify({"error": f"Missing field: {field}"}), 400
+
+    doc = {
+        "title":          data["title"],
+        "link":           data["link"],
+        "type":           data["type"],
+        "level":          data["level"],
+        "price":          data["price"],
+        "target_language": data.get("target_language") or None,
+        "tags":           data.get("skills", []),
+        "rating":         float(data["rating"]) if data.get("rating") else None,
+        "review_count":   int(data["review_count"]) if data.get("review_count") else None,
+        "description":    data["description"],
+        "submitted_by":   current_user_id(),   # None if not logged in — that's fine
+        "created_at":     datetime.utcnow(),
+    }
+    print(doc)
+    result = resources_col.insert_one(doc)
+    return jsonify({"ok": True, "id": str(result.inserted_id)}), 201
 
 
 # ─── Starter packs ────────────────────────────────────────────────────────────

@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GNHN86FZQP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GNHN86FZQP');
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LanguageToolBox — Submit Resource</title>
@@ -14,14 +23,19 @@
       <div>LanguageToolBox</div></a>
       <div class="nav-search">
         <span class="muted">🔎</span>
-        <input placeholder="Search resources…" />
+        <input placeholder="Search..." />
     </div>
       <div class="nav-links">
         <a class="nav-pill" href="/dashboard">Dashboard</a>
         <a class="nav-pill" href="/resources">Browse</a>
         <a class="nav-pill" href="/starter-packs">Starter Packs</a>
         <a class="nav-pill" href="/favorites">Favorites</a>
-        <a class="nav-pill" href="/login">Log in</a>
+        {% if session.get('user_name') %}
+          <span class="nav-pill" style="white-space:nowrap;">👋 {{ session['user_name'] }}</span>
+          <a class="nav-pill" href="/logout">Log out</a>
+        {% else %}
+          <a class="nav-pill" href="/login">Log in</a>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -38,22 +52,22 @@
     <div style="height:12px;"></div>
 
     <div class="card" style="max-width: 780px;">
-      <form class="form" action="#" method="post">
+      <form class="form" id="resource-form">
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
           <div class="form-row">
             <div class="label">Title</div>
-            <input class="input" placeholder="Example: SpanishDict">
+            <input class="input" name="title" placeholder="Example: SpanishDict">
           </div>
           <div class="form-row">
             <div class="label">Resource link</div>
-            <input class="input" placeholder="https://...">
+            <input class="input" name="link" placeholder="https://...">
           </div>
         </div>
 
-        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap:12px;">
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr 1fr; gap:12px;">
           <div class="form-row">
             <div class="label">Type</div>
-            <select class="select">
+            <select class="select" name="type">
               <option>Textbook</option>
               <option>App</option>
               <option>Website</option>
@@ -64,7 +78,7 @@
           </div>
           <div class="form-row">
             <div class="label">Level</div>
-            <select class="select">
+            <select class="select" name="level">
               <option>Beginner</option>
               <option>Intermediate</option>
               <option>Advanced</option>
@@ -72,10 +86,22 @@
           </div>
           <div class="form-row">
             <div class="label">Price</div>
-            <select class="select">
+            <select class="select" name="price">
               <option>Free</option>
               <option>Paid</option>
               <option>Freemium</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="label">Language</div>
+            <select class="select" name="target_language">
+              <option value="">— Select —</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>Japanese</option>
+              <option>Korean</option>
+              <option>German</option>
+              <option>Italian</option>
             </select>
           </div>
         </div>
@@ -83,37 +109,89 @@
         <div class="form-row">
           <div class="label">Skill focus tags</div>
           <div class="row">
-            <label class="check"><input type="checkbox"> Grammar</label>
-            <label class="check"><input type="checkbox"> Vocabulary</label>
-            <label class="check"><input type="checkbox"> Speaking</label>
-            <label class="check"><input type="checkbox"> Writing</label>
-            <label class="check"><input type="checkbox"> Listening</label>
+            <label class="check"><input type="checkbox" value="Grammar"> Grammar</label>
+            <label class="check"><input type="checkbox" value="Vocabulary"> Vocabulary</label>
+            <label class="check"><input type="checkbox" value="Speaking"> Speaking</label>
+            <label class="check"><input type="checkbox" value="Writing"> Writing</label>
+            <label class="check"><input type="checkbox" value="Listening"> Listening</label>
           </div>
         </div>
 
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
           <div class="form-row">
             <div class="label">Rating (optional)</div>
-            <select class="select">
+            <select class="select" name="rating">
               <option>—</option>
               <option>5.0</option><option>4.8</option><option>4.6</option><option>4.4</option><option>4.2</option><option>4.0</option>
             </select>
           </div>
           <div class="form-row">
             <div class="label">Review count (optional)</div>
-            <input class="input" placeholder="Example: 120000">
+            <input class="input" name="review_count" placeholder="Example: 120000">
           </div>
         </div>
 
         <div class="form-row">
           <div class="label">Description</div>
-          <textarea class="textarea" rows="5" placeholder="Who is it best for? What does it focus on?"></textarea>
+          <textarea class="textarea" name="description" rows="5" placeholder="Who is it best for? What does it focus on?"></textarea>
         </div>
 
         <button class="btn primary" type="submit">Submit resource</button>
-        <div class="small-note">Later: save this form to MongoDB.</div>
       </form>
     </div>
   </div>
+
+  <script>
+    document.getElementById("resource-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const skills = [...form.querySelectorAll('input[type="checkbox"]:checked')]
+        .map(cb => cb.value);
+
+      const ratingVal = form.querySelector('select[name="rating"]').value;
+      const reviewVal = form.querySelector('input[name="review_count"]').value;
+
+      const payload = {
+        title:           form.querySelector('input[name="title"]').value.trim(),
+        link:            form.querySelector('input[name="link"]').value.trim(),
+        type:            form.querySelector('select[name="type"]').value,
+        level:           form.querySelector('select[name="level"]').value,
+        price:           form.querySelector('select[name="price"]').value,
+        target_language: form.querySelector('select[name="target_language"]').value || null,
+        skills,
+        rating:       ratingVal === "—" ? null : ratingVal,
+        review_count: reviewVal || null,
+        description:  form.querySelector('textarea[name="description"]').value.trim(),
+      };
+
+      const btn = form.querySelector('button[type="submit"]');
+      btn.textContent = "Submitting…";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || "Submission failed");
+
+        btn.textContent = "✓ Submitted!";
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = "Submit resource";
+          btn.disabled = false;
+        }, 3000);
+      } catch (err) {
+        btn.textContent = "Submit resource";
+        btn.disabled = false;
+        alert("Error: " + err.message);
+      }
+    });
+  </script>
+
 </body>
 </html>
